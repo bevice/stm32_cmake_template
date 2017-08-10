@@ -34,6 +34,9 @@ SET(CMAKE_C_COMPILER ${TOOLCHAIN_BIN_DIR}/arm-none-eabi-gcc CACHE INTERNAL "")
 SET(CMAKE_CXX_COMPILER ${TOOLCHAIN_BIN_DIR}/arm-none-eabi-g++ CACHE INTERNAL "")
 SET(CMAKE_ASM_COMPILER ${TOOLCHAIN_BIN_DIR}/arm-none-eabi-gcc CACHE INTERNAL "")
 
+# Включаем ассемблер
+ENABLE_LANGUAGE(ASM)
+
 # objcopy и objdump для создания хексов и бинариков
 SET(CMAKE_OBJCOPY ${TOOLCHAIN_BIN_DIR}/arm-none-eabi-objcopy CACHE INTERNAL "")
 SET(CMAKE_OBJDUMP ${TOOLCHAIN_BIN_DIR}/arm-none-eabi-objdump CACHE INTERNAL "")
@@ -50,10 +53,20 @@ else()
   message(STATUS "Arm semihosting: Disabled")
 
 ENDIF()
+
+# Установка HSE_VALUE
+if(NOT HSE_VALUE)
+    message(STATUS "Setting HSE to default")
+else()
+    message(STATUS "Setting HSE to ${HSE_VALUE}")
+    ADD_DEFINITIONS("-DHSE_VALUE=${HSE_VALUE}")
+
+endif()
+
 # Флаги компиляторов, тут можно подкрутить
 SET(CMAKE_C_FLAGS "-isystem ${TOOLCHAIN_INC_DIR} -mthumb -mcpu=cortex-m3 -fno-builtin -Wall -std=gnu99 ${EXTRA_FLAGS_SEMIHOSTING}" CACHE INTERNAL "c compiler flags")
 SET(CMAKE_CXX_FLAGS "-isystem ${TOOLCHAIN_INC_DIR} -mthumb -mcpu=cortex-m3 -fno-builtin -Wall " CACHE INTERNAL "cxx compiler flags")
-SET(CMAKE_EXE_LINKER_FLAGS "-nostartfiles -Wl,-Map -Wl,main.map -mthumb -mcpu=cortex-m3 -e Reset_Handler " CACHE INTERNAL "exe link flags")
+SET(CMAKE_EXE_LINKER_FLAGS "-nostartfiles -Wl,-Map -Wl,main.map -mthumb -mcpu=cortex-m3 " CACHE INTERNAL "exe link flags")
 SET(CMAKE_MODULE_LINKER_FLAGS "-L${TOOLCHAIN_LIB_DIR}" CACHE INTERNAL "module link flags")
 SET(CMAKE_SHARED_LINKER_FLAGS "-L${TOOLCHAIN_LIB_DIR}" CACHE INTERNAL "shared lnk flags")
 SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS)
