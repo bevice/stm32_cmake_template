@@ -6,6 +6,11 @@
 * ARM_TOOLCHAIN_PATH - путь к установленному тулчейну 
 * STM32_StdPeriphLib_DIR - путь к StdPerithLib (STM32F10x_StdPeriph_Lib_V3.5.0)
 
+## Flashing
+
+### st-link tools
+     st-flash --reset write firmware.bin 0x8000000
+
 
 ## OpenOCD
 
