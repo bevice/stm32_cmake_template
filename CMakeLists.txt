@@ -1,6 +1,9 @@
 
 # SET(SEMIHOSTING "enable")
 
+# Частота  HSE
+# SET(HSE_VALUE 16000000)
+
 
 include(stm32.cmake)
 
@@ -9,10 +12,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 
 PROJECT(stm32template)
-
-
-# Включаем ассемблер
-ENABLE_LANGUAGE(ASM)
 
 # Размера флеша
 SET(STM32_FLASH_SIZE "64K")
@@ -40,6 +39,7 @@ SET(STARTUP_SOURCE ${STM32_STARTUP_MD})
 
 # Какие модули собирать
 SET(MOD_SOURCES
+#  ${SMT32_CMSIS_CORE_CM3}
 #  ${STM32_MISC_SOURCE}
 #  ${STM32_ADC_SOURCE}
 #  ${STM32_BKP_SOURCE}
